@@ -1,7 +1,9 @@
 :host {
   display: block;
-  width: 508px;
+  width: 500px;
   height: 250px;
-  background-color: darkgray;
+  background-color: white;
   overflow-y: auto;
+  border: solid 6px black;
+  border-radius: 5%;
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Pokemon } from '../models/pokemon.model';
 
 @Component({
   selector: 'app-pokemon-status-bar',
@@ -6,9 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./pokemon-status-bar.component.css']
 })
 export class PokemonStatusBarComponent implements OnInit {
-  @Input() pokemonName: string;
-  @Input() pokemonLevel: number;
-  @Input() pokemonHealth: number;
+  @Input() pokemon: Pokemon;
 
   constructor() { }
 

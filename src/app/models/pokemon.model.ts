@@ -2,6 +2,8 @@ import { Type } from "./type.model";
 import { Attack } from "./attack.model";
 
 export class Pokemon {
+    public maxHealth: number
+
     constructor(public name: string,
             public type: Type,
             public level: number,
@@ -14,6 +16,7 @@ export class Pokemon {
             public attacks: Array<Attack>) {
         this.name = name;
         this.health = health;
+        this.maxHealth = health;
         this.attack = attack;
         this.defense = defense;
         this.spAttack = spAttack;

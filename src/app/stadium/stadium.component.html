@@ -1,3 +1,10 @@
-<button (click)="fight()">Start Fight</button>
-<app-pokemon class="face" [pokemonName]="'nidoran'"></app-pokemon>
-<app-pokemon class="back" [pokemonName]="'roucool'" [fromBack]="true"></app-pokemon>
+<button *ngIf="!isFighting" (click)="fight()">Start Fight</button>
+<button *ngIf="isFighting" (click)="isPaused = !isPaused">{{isPaused ? 'Resume' : 'Pause'}}</button>
+
+<app-pokemon class="pokemon-face" [pokemonName]="pokemon2.name.toLowerCase()"></app-pokemon>
+<app-pokemon class="pokemon-back" [pokemonName]="pokemon1.name.toLowerCase()" [fromBack]="true"></app-pokemon>
+
+<app-pokemon-status-bar class="status-bar-back" [pokemon]="pokemon1"></app-pokemon-status-bar>
+<app-pokemon-status-bar class="status-bar-face" [pokemon]="pokemon2"></app-pokemon-status-bar>
+
+<button (click)="reset()">Reset Fight</button>

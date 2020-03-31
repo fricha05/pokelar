@@ -15,22 +15,44 @@ export class StadiumComponent implements OnInit {
   pokemon1: Pokemon;
   pokemon2: Pokemon;
 
-  constructor(private battleLogService: BattleLogService) { }
+  isPaused: boolean = false;
+  isFighting: boolean = false;
+
+  constructor(public battleLogService: BattleLogService) { }
 
   ngOnInit(): void {
+    this.reset();
+    //this.fight();
+  }
+
+  pauseResume() {
+    this.isPaused = !this.isPaused;
+    this.battleLogService.add(this.isPaused ? "Combat en pause..." : "Le combat continue !")
+  }
+
+  fight(): void {
+    this.isFighting = true;
+    this.battleLogService.add("Le combat commence.");
+
+    this.rounds(this.pokemon1, this.pokemon2, 1000)
+        .then((winner: Pokemon) => {
+            this.battleLogService.add(`${winner.name} a gagné !`);
+        })
+        .finally(() => {
+          this.isFighting = false;
+        })
+  }
+
+  reset(): void {
+    clearInterval(StadiumComponent.intervalId);
+    this.battleLogService.clear();
+    this.isFighting = false;
+    this.isPaused = false;
+    
     const attack: Attack = new Attack("Charge", Type.Normal, 40, 100, Nature.Physical);
 
     this.pokemon1 = new Pokemon("Roucool", Type.Flying, 15, 76, 70, 43, 67, 23, 54, [attack]);
     this.pokemon2 = new Pokemon("Nidoran", Type.Poison, 17, 60, 12, 43, 67, 23, 43, [attack]);
-  }
-
-  fight(): void {
-    this.battleLogService.add("Le combat commence.");
-
-    this.rounds(this.pokemon1, this.pokemon2)
-        .then((winner: Pokemon) => {
-            this.battleLogService.add(`${winner.name} a gagné !`);
-        })
   }
 
   static isFirstStarting(pokemon1: Pokemon, pokemon2: Pokemon): boolean {
@@ -63,7 +85,7 @@ export class StadiumComponent implements OnInit {
           this.battleLogService.add(`${attacker.name} attaque ${attack.name}.`);
           const dmg: number = StadiumComponent.calculateDamage(attacker, receiver, attack);
           receiver.health -= dmg;
-          this.battleLogService.add(`${attacker.name} inflige ${dmg} points de dégâts.`);
+          this.battleLogService.add(`${attacker.name} inflige ${dmg} points de dégats.`);
 
           if (receiver.health <= 0) { 
               receiver.health = 0; // Remise à 0 pour ne pas afficher de points négatifs
@@ -75,10 +97,11 @@ export class StadiumComponent implements OnInit {
       }
   }
 
-  rounds(pokemon: Pokemon, pokemon2: Pokemon): Promise<Pokemon> {
+  rounds(pokemon: Pokemon, pokemon2: Pokemon, ms: number): Promise<Pokemon> {
       let i: number = 1;
       return new Promise<Pokemon>((resolve, reject) => {
         StadiumComponent.intervalId = setInterval(() => {
+          if(!this.isPaused){
               const first: Pokemon = StadiumComponent.isFirstStarting(pokemon, pokemon2) ? pokemon : pokemon2;
               const second: Pokemon = StadiumComponent.isFirstStarting(pokemon, pokemon2) ? pokemon2 : pokemon;
   
@@ -88,20 +111,21 @@ export class StadiumComponent implements OnInit {
               this.attack(first, second);
   
               if (!second.isKO()) {
-                  // Second Attack
-                  this.attack(second, first);
+                // Second Attack
+                this.attack(second, first);
 
-                  if (first.isKO()) {
-                      resolve(second);
-                      clearInterval(StadiumComponent.intervalId);
-                      return;
-                  }
+                if (first.isKO()) {
+                    resolve(second);
+                    clearInterval(StadiumComponent.intervalId);
+                    return;
+                }
               } else {
                   resolve(first);
                   clearInterval(StadiumComponent.intervalId);
                   return;
               }
-          }, 500);
+            }
+          }, ms);
       })
   }
 }

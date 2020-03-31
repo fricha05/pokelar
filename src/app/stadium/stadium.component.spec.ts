@@ -1,10 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { StadiumComponent } from './stadium.component';
 import { Attack, Nature } from '../models/attack.model';
 import { Type } from '../models/type.model';
 import { Pokemon } from '../models/pokemon.model';
-import { PokemonComponent } from '../pokemon/pokemon.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('StadiumComponent', () => {
   let component: StadiumComponent;
@@ -18,7 +17,10 @@ describe('StadiumComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ StadiumComponent, PokemonComponent ]
+      declarations: [ 
+        StadiumComponent
+       ],
+       schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     })
     .compileComponents();
   }));
@@ -43,10 +45,26 @@ describe('StadiumComponent', () => {
           .toBe(11)
   })
 
+  it('calculate the magical damage dealt', () => {
+    const spAttack = new Attack("Météores", Type.Normal, 60, 100, Nature.Special);
+    expect(StadiumComponent.calculateDamage(capumain, ferosinge, spAttack))
+        .toBe(19)
+})
+
   it('run a fight', async () => {
-    await component.rounds(capumain, ferosinge);
+    component.isFighting = true;
+    await component.rounds(capumain, ferosinge, 10);
     expect(capumain.isKO()).toBeTruthy();
     expect(ferosinge.isKO()).toBeFalsy();
   })
 
+  it('should reset the component', () => {
+    component.reset();
+    expect(component.isFighting).toBeFalsy();
+    expect(component.isPaused).toBeFalsy();
+
+    expect(component.battleLogService.messages.length).toBe(0);
+    expect(component.pokemon1.health).toBe(component.pokemon1.maxHealth);
+    expect(component.pokemon2.health).toBe(component.pokemon2.maxHealth);
+  })
 });

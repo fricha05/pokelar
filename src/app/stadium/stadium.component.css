@@ -7,12 +7,22 @@ app-pokemon {
   transform: scale(2);
 }
 
-.face {
+.pokemon-face {
   right: 90px;
   top: 105px;
 }
 
-.back {
+.pokemon-back {
   left: 80px;
+  bottom: 5px;
+}
+
+.status-bar-face {
+  left: 60px;
+  top: 60px;
+}
+
+.status-bar-back {
+  right: 20px;
   bottom: 5px;
 }

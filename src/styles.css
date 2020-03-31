@@ -1,4 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 html {
   background-color: darkcyan;
+  color: black;
+  font-family: 'Pokemon';
+}
+
+@font-face {
+  font-family: 'Pokemon';
+  src: url('./assets/pokemon_font.ttf') format('truetype');
 }

@@ -1,3 +1,18 @@
-/* :host {
-  background: url('/assets/stadium.png') no-repeat cover;
-} */
+:host {
+  position: relative;
+}
+
+app-pokemon {
+  position: absolute;
+  transform: scale(2);
+}
+
+.face {
+  right: 90px;
+  top: 105px;
+}
+
+.back {
+  left: 80px;
+  bottom: 5px;
+}

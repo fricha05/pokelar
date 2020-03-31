@@ -33,7 +33,7 @@ export class StadiumComponent implements OnInit {
         })
   }
 
-  private static isFirstStarting(pokemon1: Pokemon, pokemon2: Pokemon): boolean {
+  static isFirstStarting(pokemon1: Pokemon, pokemon2: Pokemon): boolean {
       if (pokemon1.speed === pokemon2.speed) {
           return Math.floor(Math.random() * 2) + 1 === 1; 
       } else {
@@ -47,7 +47,7 @@ export class StadiumComponent implements OnInit {
   }
 
   // Returns damage dealt
-  private static calculateDamage(attacker: Pokemon, receiver: Pokemon, attack: Attack): number {
+  static calculateDamage(attacker: Pokemon, receiver: Pokemon, attack: Attack): number {
       if (attack.nature === Nature.Physical) {
           return Math.floor(Math.floor(Math.floor(2 * attacker.level / 5 + 2) 
               * attacker.attack * attack.power / receiver.defense) / 50) + 2;
@@ -75,7 +75,7 @@ export class StadiumComponent implements OnInit {
       }
   }
 
-  private rounds(pokemon: Pokemon, pokemon2: Pokemon): Promise<Pokemon> {
+  rounds(pokemon: Pokemon, pokemon2: Pokemon): Promise<Pokemon> {
       let i: number = 1;
       return new Promise<Pokemon>((resolve, reject) => {
         StadiumComponent.intervalId = setInterval(() => {

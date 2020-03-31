@@ -1,0 +1,7 @@
+:host {
+  display: block;
+  width: 508px;
+  height: 250px;
+  background-color: darkgray;
+  overflow-y: auto;
+}

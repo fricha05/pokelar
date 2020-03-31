@@ -1,1 +1,2 @@
-<p>pokemon works!</p>
+<img *ngIf="fromBack" src="/assets/sprite_{{pokemonName}}_back.png" alt="Image of {{pokemonName}} from behind">
+<img *ngIf="!fromBack" src="/assets/sprite_{{pokemonName}}.png" alt="Image of {{pokemonName}} from face">

@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { BattleLogComponent } from './battle-log.component';
 import { BattleLogService } from '../services/battle-log.service';
+import { LogTypeDirective } from '../directives/log-type.directive';
 
 describe('LogComponent', () => {
   let component: BattleLogComponent;
@@ -9,7 +10,7 @@ describe('LogComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BattleLogComponent ],
+      declarations: [ BattleLogComponent, LogTypeDirective ],
       providers: [ BattleLogService ]
     })
     .compileComponents();

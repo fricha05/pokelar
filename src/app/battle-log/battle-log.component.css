@@ -1,9 +1,14 @@
 :host {
   display: block;
-  width: 500px;
-  height: 250px;
+  width: 480px;
+  height: 230px;
   background-color: white;
   overflow-y: auto;
   border: solid 6px black;
   border-radius: 5%;
+  padding: 10px;
+}
+
+.important-txt {
+  color: red;
 }

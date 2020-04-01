@@ -2,11 +2,6 @@
   position: relative;
 }
 
-app-pokemon {
-  position: absolute;
-  transform: scale(2);
-}
-
 .pokemon-face {
   right: 90px;
   top: 105px;
@@ -14,7 +9,7 @@ app-pokemon {
 
 .pokemon-back {
   left: 80px;
-  bottom: 5px;
+  bottom: 8px;
 }
 
 .status-bar-face {

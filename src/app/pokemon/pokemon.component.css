@@ -1,2 +1,8 @@
-img {
+:host {
+  position: absolute;
+  transform: scale(2);
+}
+
+.dead {
+  filter: grayscale(100%);
 }

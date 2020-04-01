@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Pokemon } from '../models/pokemon.model';
 
 
 @Component({
@@ -8,7 +9,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class PokemonComponent implements OnInit {
   @Input() fromBack: boolean = false;
-  @Input() pokemonName: string;
+  @Input() pokemon: Pokemon;
   
   constructor() { }
 

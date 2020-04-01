@@ -1,2 +1,2 @@
-<img *ngIf="fromBack" src="/assets/sprite_{{pokemonName}}_back.png" alt="Image of {{pokemonName}} from behind">
-<img *ngIf="!fromBack" src="/assets/sprite_{{pokemonName}}.png" alt="Image of {{pokemonName}} from face">
+<img *ngIf="fromBack" [ngClass]="{'dead': pokemon.isKO()}" src="/assets/sprite_{{pokemon.name.toLowerCase()}}_back.png" alt="Image of {{pokemon.name}} from behind">
+<img *ngIf="!fromBack" [ngClass]="{'dead': pokemon.isKO()}" src="/assets/sprite_{{pokemon.name.toLowerCase()}}_face.png" alt="Image of {{pokemon.name}} from face">

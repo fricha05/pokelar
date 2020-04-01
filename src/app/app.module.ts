@@ -10,19 +10,29 @@ import { BattleLogComponent } from './battle-log/battle-log.component';
 
 import { BattleLogService } from './services/battle-log.service';
 
+import { LogTypeDirective } from './directives/log-type.directive';
+import { DatePipe, DecimalPipe } from '@angular/common';
+import { PokeApiService } from './services/poke-api.service';
+
 @NgModule({
   declarations: [
     AppComponent,
     StadiumComponent,
     PokemonComponent,
     BattleLogComponent,
-    PokemonStatusBarComponent
+    PokemonStatusBarComponent,
+    LogTypeDirective
   ],
   imports: [
     BrowserModule,
     AppRoutingModule
   ],
-  providers: [BattleLogService],
+  providers: [
+    BattleLogService,
+    PokeApiService,
+    DatePipe,
+    DecimalPipe
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

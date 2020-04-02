@@ -10,7 +10,7 @@ import { Pokemon } from '../models/pokemon.model';
 export class PokemonComponent implements OnInit {
   @Input() fromBack: boolean = false;
   @Input() pokemon: Pokemon;
-  
+
   constructor() { }
 
   ngOnInit(): void {

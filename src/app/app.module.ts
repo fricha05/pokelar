@@ -16,6 +16,9 @@ import { PokeApiService } from './services/poke-api.service';
 import { LogTypeDirective } from './directives/log-type.directive';
 import { DatePipe, DecimalPipe } from '@angular/common';
 
+import { PokemonDraftComponent } from './views/pokemon-draft/pokemon-draft.component';
+import { PokemonBattleComponent } from './views/pokemon-battle/pokemon-battle.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,7 +26,9 @@ import { DatePipe, DecimalPipe } from '@angular/common';
     PokemonComponent,
     BattleLogComponent,
     PokemonStatusBarComponent,
-    LogTypeDirective
+    LogTypeDirective,
+    PokemonDraftComponent,
+    PokemonBattleComponent
   ],
   imports: [
     BrowserModule,

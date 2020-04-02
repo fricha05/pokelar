@@ -1,5 +1,5 @@
-<button *ngIf="!battleService.isFighting" (click)="battleService.fight()">Start Fight</button>
-<button *ngIf="battleService.isFighting" (click)="battleService.isPaused = !battleService.isPaused">{{battleService.isPaused ? 'Resume' : 'Pause'}}</button>
+<button *ngIf="!battleService.isFighting" (click)="fight()">Start Fight</button>
+<button *ngIf="battleService.isFighting" (click)="pauseResume()">{{battleService.isPaused ? 'Resume' : 'Pause'}}</button>
 
 <app-pokemon class="pokemon-face" [pokemon]="battleService.enemyPokemon"></app-pokemon>
 <app-pokemon class="pokemon-back" [pokemon]="battleService.myPokemon" [fromBack]="true"></app-pokemon>

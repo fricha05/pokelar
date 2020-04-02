@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { BattleService } from './battle.service';
 import { Attack, Nature } from '../models/attack.model';
 import { Type } from '../models/type.model';
-import { DatePipe, DecimalPipe } from '@angular/common';
+import { DecimalPipe } from '@angular/common';
 import { Pokemon } from '../models/pokemon.model';
 import { BattleLogService } from './battle-log.service';
 
@@ -19,15 +19,14 @@ describe('BattleService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        DatePipe,
         DecimalPipe,
         BattleLogService
       ]
     });
     service = TestBed.inject(BattleService);
 
-    capumain = new Pokemon("Capumain", Type.Normal, 20, 130, 120, 123, 80, 80, 187, [attack]);
-    ferosinge = new Pokemon("Ferosinge", Type.Fighting, 23, 140, 150, 100, 56, 54, 120, [attack2]);
+    capumain = new Pokemon("Capumain", Type.Normal, 20, 130, 120, 123, 80, 80, 187, "", "", [attack]);
+    ferosinge = new Pokemon("Ferosinge", Type.Fighting, 23, 140, 150, 100, 56, 54, 120, "", "", [attack2]);
     service.reset();
   });
 
@@ -39,6 +38,15 @@ describe('BattleService', () => {
     expect(BattleService.isFirstStarting(capumain, ferosinge))
         .toBeTruthy();
   })
+
+  it('should return random beginner when same speed', () => {
+    global.Math.random = () => 0.6
+
+    capumain.speed = 100;
+    ferosinge.speed = 100;
+
+    expect(BattleService.isFirstStarting(capumain, ferosinge)).toBeFalsy();
+  });
 
   it('calculate the physical damage dealt', () => {
       expect(BattleService.calculateDamage(capumain, ferosinge, attack))
@@ -61,9 +69,9 @@ describe('BattleService', () => {
 
   it('should run a fight', async () => {
     service.isFighting = true;
-    await service.rounds(capumain, ferosinge, 10);
-    expect(capumain.isKO()).toBeTruthy();
+    await service.rounds(capumain, ferosinge, 10).toPromise();
     expect(ferosinge.isKO()).toBeFalsy();
+    expect(capumain.isKO()).toBeTruthy();
   })
 
   it('should reset the service', () => {

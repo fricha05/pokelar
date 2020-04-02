@@ -5,8 +5,9 @@ import { Attack, Nature } from '../models/attack.model';
 import { TypeMessage } from '../models/message-log.model';
 import { StadiumComponent } from '../stadium/stadium.component';
 import { BattleLogService } from './battle-log.service';
-import { DecimalPipe, DatePipe } from '@angular/common';
+import { DecimalPipe } from '@angular/common';
 import { Type } from '../models/type.model';
+import { from, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -19,12 +20,11 @@ export class BattleService {
 
   isPaused: boolean = false;
   isFighting: boolean = false;
+  enemyAttack: boolean = false;
+  turn: number = 1;
 
-  constructor(
-    public battleLogService: BattleLogService,
-    private decimalPipe: DecimalPipe,
-    private datePipe: DatePipe
-  ) { }
+  constructor(public battleLogService: BattleLogService, private decimalPipe: DecimalPipe) { 
+  }
 
   // Pause/Resume the fight
   pauseResume() {
@@ -32,20 +32,16 @@ export class BattleService {
     this.battleLogService.add(this.isPaused ? "Combat en pause..." : "Le combat continue !")
   }
 
-  // Start the fight
-  fight(): void {
-    this.isFighting = true;
-    const msg = `${this.datePipe.transform(new Date(), 'HH:mm:ss')}: Le combat commence.`;
+  // Set pokemon and reset state
+  setPokemon(pokemon: Pokemon, mine: boolean = true) {
+    if (mine) {
+      this.myPokemon = pokemon;
+    } else {
+      this.enemyPokemon = pokemon;
+    }
 
-    this.battleLogService.add(msg);
-
-    this.rounds(this.myPokemon, this.enemyPokemon, 1000)
-        .then((winner: Pokemon) => {
-            this.battleLogService.add(`${winner.name} a gagné !`);
-        })
-        .finally(() => {
-          this.isFighting = false;
-        })
+    // Reset state
+    this.reset();
   }
 
   // Resets the entire fight
@@ -55,10 +51,21 @@ export class BattleService {
     this.isFighting = false;
     this.isPaused = false;
     
-    const attack: Attack = new Attack("Charge", Type.Normal, 40, 100, Nature.Physical);
+    if (this.myPokemon)
+      this.myPokemon.health = this.myPokemon.maxHealth;
 
-    this.myPokemon = new Pokemon("Roucool", Type.Flying, 15, 76, 70, 43, 67, 23, 54, [attack]);
-    this.enemyPokemon = new Pokemon("Nidoran", Type.Poison, 17, 60, 12, 43, 67, 23, 43, [attack]);
+    if (this.enemyPokemon)
+      this.enemyPokemon.health = this.enemyPokemon.maxHealth;
+
+    /*const attack: Attack = new Attack("Charge", Type.Normal, 40, 100, Nature.Physical);
+
+    this.myPokemon = new Pokemon("Roucool", Type.Flying, 15, 76, 70, 43, 67, 23, 54, 
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/16.png", 
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/16.png", 
+      [attack]);
+    this.enemyPokemon = new Pokemon("Nidoran", Type.Poison, 17, 60, 12, 43, 67, 23, 43, 
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/29.png", 
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/29.png", [attack]);*/
   }
 
   // Determines if pokemon1 will attack in first
@@ -109,35 +116,27 @@ export class BattleService {
   }
 
   // Each round is an interval, in which each pokemon attacks once
-  rounds(pokemon: Pokemon, pokemon2: Pokemon, ms: number): Promise<Pokemon> {
-      let turn: number = 1;
-      return new Promise<Pokemon>((resolve, reject) => {
-        BattleService.intervalId = setInterval(() => {
-          if(!this.isPaused){
-              const first: Pokemon = BattleService.isFirstStarting(pokemon, pokemon2) ? pokemon : pokemon2;
-              const second: Pokemon = BattleService.isFirstStarting(pokemon, pokemon2) ? pokemon2 : pokemon;
+  rounds(pokemon: Pokemon, pokemon2: Pokemon, ms: number): Observable<Pokemon> {
+    this.enemyAttack = BattleService.isFirstStarting(pokemon2, pokemon);
 
-              this.battleLogService.add(`Tour ${turn++}`, TypeMessage.INFO);
+    return from(new Promise<Pokemon>((resolve, reject) => {
+      BattleService.intervalId = setInterval(() => {
+        if(!this.isPaused){
+            const attacker: Pokemon = this.enemyAttack ? pokemon2 : pokemon;
+            const receiver: Pokemon = this.enemyAttack ? pokemon : pokemon2;
 
-              // First attack
-              this.attack(first, second);
-
-              if (!second.isKO()) {
-                // Second Attack
-                this.attack(second, first);
-
-                if (first.isKO()) {
-                    resolve(second);
-                    clearInterval(BattleService.intervalId);
-                    return;
-                }
-              } else {
-                  resolve(first);
-                  clearInterval(BattleService.intervalId);
-                  return;
-              }
+            // Attack
+            this.attack(attacker, receiver);
+            if (receiver.isKO()) {
+              resolve(attacker);
+              clearInterval(BattleService.intervalId);
+              return;
             }
-          }, ms);
-      });
+
+            // Change attacker after turn ends
+            this.enemyAttack = !this.enemyAttack;
+          }
+        }, ms);
+    }));
   }
 }

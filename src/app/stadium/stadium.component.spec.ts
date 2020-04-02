@@ -4,6 +4,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BattleService } from '../services/battle.service';
 import { PokeApiService } from '../services/poke-api.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { DatePipe } from '@angular/common';
 
 describe('StadiumComponent', () => {
   let component: StadiumComponent;
@@ -19,7 +20,8 @@ describe('StadiumComponent', () => {
       ],
       providers: [ 
         { provide: BattleService, useValue: battleService },
-        { provide: PokeApiService, useValue: {} }
+        { provide: PokeApiService, useValue: {} },
+        DatePipe
       ],
       schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
     })

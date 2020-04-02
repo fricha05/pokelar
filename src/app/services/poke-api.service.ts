@@ -12,11 +12,23 @@ import { Attack, Nature } from '../models/attack.model';
 export class PokeApiService {
   public static API_URL: string = "https://pokeapi.co/api/v2/pokemon/";
 
+  public static availablePokemons = {
+    mewtwo: "mewtwo",
+    motisma: "rotom",
+    nidoran: "nidoran-f",
+    pikachu: "pikachu",
+    quenotor: "bidoof",
+    rattata: "rattata",
+    rayquaza: "rayquaza",
+    roucool: "pidgey",
+    sorboul: "vanillish",
+  }
+
   constructor(private http: HttpClient) { }
 
-  private static mapPokemon(json): Pokemon {
+  private static mapPokemon(name: string, json): Pokemon {
     return new Pokemon(
-      name,
+      name.substring(0, 1).toUpperCase() + name.substring(1),
       this.convertType(json["types"][0].type.name),
       1, // Level
       json["stats"][5].base_stat,
@@ -25,14 +37,20 @@ export class PokeApiService {
       json["stats"][2].base_stat,
       json["stats"][1].base_stat,
       json["stats"][0].base_stat,
-      [new Attack("Charge", Type.Normal, 40, 100, Nature.Physical)]
+      json["sprites"].front_default,
+      json["sprites"].back_default,
+      [new Attack("Charge", Type.Normal, 80, 100, Nature.Physical)]
     );
   }
   
-  getPokemonByName(pokemonName: string): Observable<any> {
-    const url: string = PokeApiService.API_URL + pokemonName;
+  public getPokemonByName(pokemonNameFr: string): Observable<Pokemon> {
+    const url: string = PokeApiService.API_URL + PokeApiService.translateName(pokemonNameFr);
     return this.http.get(url)
-      .pipe(map((res: Response) => PokeApiService.mapPokemon(res)));
+      .pipe(map((res: Response) => PokeApiService.mapPokemon(pokemonNameFr, res)));
+  }
+
+  public static translateName(nameFr: string) {
+    return PokeApiService.availablePokemons[nameFr];
   }
 
   // Convert String to enum Type

@@ -13,6 +13,8 @@ export class Pokemon {
             public spAttack: number,
             public spDefense: number,
             public speed: number,
+            public frontImgSrc: string,
+            public backImgSrc: string,
             public attacks: Array<Attack>) {
         this.name = name;
         this.health = health;
@@ -22,6 +24,8 @@ export class Pokemon {
         this.spAttack = spAttack;
         this.spDefense = spDefense;
         this.speed = speed;
+        this.frontImgSrc = frontImgSrc;
+        this.backImgSrc = backImgSrc;
         this.attacks = attacks
     }
 

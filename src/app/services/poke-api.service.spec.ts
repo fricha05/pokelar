@@ -23,9 +23,9 @@ describe('PokeApiService', () => {
     const pokeApiService: PokeApiService = TestBed.get(PokeApiService);
     const http = TestBed.get(HttpTestingController);
     
-    const pokemon = new Pokemon("Ferosinge", Type.Fighting, 23, 140, 150, 100, 56, 54, 120, []);
+    const pokemon = new Pokemon("Roucool", Type.Fighting, 23, 140, 150, 100, 56, 54, 120, "", "", []);
 
-    pokeApiService.getPokemonByName("pidgey").subscribe((p: Pokemon) => {
+    pokeApiService.getPokemonByName("roucool").subscribe((p: Pokemon) => {
       expect(p).toBeTruthy();
     });
     http.expectOne(PokeApiService.API_URL + "pidgey").flush(pokemon);

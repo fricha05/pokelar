@@ -19,7 +19,7 @@ describe('PokemonComponent', () => {
     fixture = TestBed.createComponent(PokemonComponent);
     component = fixture.componentInstance;
 
-    component.pokemon = new Pokemon("Capumain", Type.Normal, 20, 130, 120, 123, 80, 80, 187, []);
+    component.pokemon = new Pokemon("Capumain", Type.Normal, 20, 130, 120, 123, 80, 80, 187, "", "", []);
     component.fromBack = true;
 
     fixture.detectChanges();

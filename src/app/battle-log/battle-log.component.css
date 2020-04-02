@@ -1,12 +1,14 @@
 :host {
   display: block;
-  width: 480px;
-  height: 230px;
+  width: 508px;
+  height: 250px;
   background-color: white;
   overflow-y: auto;
   border: solid 6px black;
   border-radius: 5%;
   padding: 10px;
+  z-index: 1000;
+  position: relative;
 }
 
 .important-txt {

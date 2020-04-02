@@ -18,7 +18,7 @@ describe('PokemonStatusBarComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(PokemonStatusBarComponent);
     component = fixture.componentInstance;
-    component.pokemon = new Pokemon("Ferosinge", Type.Fighting, 23, 140, 150, 100, 56, 54, 120, []);
+    component.pokemon = new Pokemon("Ferosinge", Type.Fighting, 23, 140, 150, 100, 56, 54, 120, "", "", []);
     fixture.detectChanges();
   });
 

@@ -36,7 +36,6 @@ export class PokemonFormComponent implements OnInit {
   }
 
   save() {
-    console.log("form submit");
     if(this.creationForm.valid){
       this.pokeApiService.getPokemonByName(this.creationForm.value.name)
         .subscribe(

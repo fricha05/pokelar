@@ -7,7 +7,6 @@ import { PokemonFormComponent } from './pokemon-form/pokemon-form.component';
 
 const routes: Routes = [
   { path: '', component: PokemonBattleComponent },
-  { path: 'battle', component: PokemonBattleComponent },
   { path: 'battle/:myPokemon/:enemyPokemon', component: PokemonBattleComponent },
   { path: 'create', component: PokemonFormComponent },
   { path: 'jesappelleroute', component: PokemonDraftComponent }

@@ -4,6 +4,7 @@ import { PokeApiService } from '../services/poke-api.service';
 import { BattleLogService } from '../services/battle-log.service';
 import { Pokemon } from '../models/pokemon.model';
 import { DatePipe } from '@angular/common';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-stadium',
@@ -11,7 +12,8 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./stadium.component.css']
 })
 export class StadiumComponent implements OnInit, OnDestroy {
-  
+  subscriber: Subscription;
+
   constructor(
     public battleLogService: BattleLogService,
     public battleService: BattleService,
@@ -24,6 +26,9 @@ export class StadiumComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.battleService.reset();
+    if (this.subscriber) {
+      this.subscriber.unsubscribe();
+    }
   }
 
   // Pause/Resume the fight
@@ -36,7 +41,7 @@ export class StadiumComponent implements OnInit, OnDestroy {
     this.battleService.isFighting = true;
     this.battleLogService.add(`${this.datePipe.transform(new Date(), 'HH:mm:ss')}: Le combat commence.`);
 
-    this.battleService.rounds(this.battleService.myPokemon, this.battleService.enemyPokemon, 1000)
+    this.subscriber = this.battleService.rounds(this.battleService.myPokemon, this.battleService.enemyPokemon, 1000)
       .subscribe(
         (winner: Pokemon) => {
             this.battleLogService.add(`${winner.name} a gagné !`);

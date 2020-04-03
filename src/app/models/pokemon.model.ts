@@ -38,10 +38,25 @@ export class Pokemon {
         return this.attacks[index];
     }
 
-    public toString(): string  {
-        return `${this.name} \tLvl ${this.level}\n`
-            + `\tPV\t${this.health} \tVIT\t${this.speed}\n`
-            + `\tATQ\t${this.attack} \tDEF\t${this.defense}\n`
-            + `\tATQ SP\t${this.spAttack} \tDEF SP\t${this.spDefense}\n`
+    // Level up pokemon from Lvl.1 to `level`
+    /*public static levelUp(pokemon: Pokemon, level: number): Pokemon {
+        // Do nothing if pokemon is not lvl 1 (Not implemented) or `level` is incorrect
+        if (pokemon.level != 1 || level <= 1 && level > 100) return pokemon;
+
+        return new Pokemon(pokemon.name, pokemon.type, level,
+            Pokemon.calculateNewStat(pokemon.maxHealth, level, true),
+            Pokemon.calculateNewStat(pokemon.attack, level),
+            Pokemon.calculateNewStat(pokemon.defense, level),
+            Pokemon.calculateNewStat(pokemon.spAttack, level),
+            Pokemon.calculateNewStat(pokemon.spDefense, level),
+            Pokemon.calculateNewStat(pokemon.speed, level), 
+            "", "", pokemon.attacks);
     }
+
+    public static calculateNewStat(baseStat: number, level: number, isHealth: boolean = false): number {
+        if (isHealth) {
+            return Math.floor((8 + 2 * baseStat) * level / 100 + level + 10);
+        }
+        return Math.floor((8 + 2 * baseStat) * level / 100 + 5);
+    }*/
 }

@@ -56,16 +56,6 @@ export class BattleService {
 
     if (this.enemyPokemon)
       this.enemyPokemon.health = this.enemyPokemon.maxHealth;
-
-    /*const attack: Attack = new Attack("Charge", Type.Normal, 40, 100, Nature.Physical);
-
-    this.myPokemon = new Pokemon("Roucool", Type.Flying, 15, 76, 70, 43, 67, 23, 54, 
-      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/16.png", 
-      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/16.png", 
-      [attack]);
-    this.enemyPokemon = new Pokemon("Nidoran", Type.Poison, 17, 60, 12, 43, 67, 23, 43, 
-      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/29.png", 
-      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/29.png", [attack]);*/
   }
 
   // Determines if pokemon1 will attack in first
@@ -104,7 +94,7 @@ export class BattleService {
           this.battleLogService.add(`${attacker.name} attaque ${attack.name}.`, typeMessage);
           const dmg: number = BattleService.calculateDamage(attacker, receiver, attack);
           receiver.health -= dmg;
-          this.battleLogService.add(`${attacker.name} inflige ${this.decimalPipe.transform(dmg, "1.0")} points de dégats.`, typeMessage);
+          this.battleLogService.add(`${attacker.name} inflige ${this.decimalPipe.transform(dmg, '1.1')} points de dégats.`, typeMessage);
 
           if (receiver.isKO()) { 
               receiver.health = 0; // Remise à 0 pour ne pas afficher de points négatifs

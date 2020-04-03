@@ -1,0 +1,48 @@
+<form novalidate [formGroup]="creationForm" (ngSubmit)="save()">
+  <div>
+    <label for="name">Name: </label>
+    <select name="name" formControlName="name">
+      <option *ngFor="let name of getNamesList()" [value]="name">{{name}}</option>
+    </select>
+    <span *ngIf="creationForm.get('name').errors?.required">*</span>
+  </div>
+  <div>
+    <label class="col-xs-2" for="level">Niveau : </label>
+    <input type="number" class="form-control" name="level" formControlName="level" />
+    <span *ngIf="creationForm.get('level').errors?.required">*</span>
+  </div>
+  <div>
+    <label class="col-xs-2" for="health">Points de vie : </label>
+    <input type="number" class="form-control" name="health" formControlName="health" />
+    <span *ngIf="creationForm.get('health').errors?.required">*</span>
+  </div>
+  <div>
+    <label class="col-xs-2" for="attack">Attaque : </label>
+    <input type="number" class="form-control" name="attack" formControlName="attack" />
+    <span *ngIf="creationForm.get('attack').errors?.required">*</span>
+  </div>
+  <div>
+    <label class="col-xs-2" for="defense">Defense : </label>
+    <input type="number" class="form-control" name="defense" formControlName="defense" />
+    <span *ngIf="creationForm.get('defense').errors?.required">*</span>
+  </div>
+  <div>
+    <label class="col-xs-2" for="spAttack">Attaque Spéciale : </label>
+    <input type="number" class="form-control" name="spAttack" formControlName="spAttack" />
+    <span *ngIf="creationForm.get('spAttack').errors?.required">*</span>
+  </div>
+  <div>
+    <label class="col-xs-2" for="spDefense">Défense Spéciale : </label>
+    <input type="number" class="form-control" name="spDefense" formControlName="spDefense" />
+    <span *ngIf="creationForm.get('spDefense').errors?.required">*</span>
+  </div>
+  <div>
+    <label class="col-xs-2" for="speed">Vitesse : </label>
+    <input type="number" class="form-control" name="speed" formControlName="speed"/>
+    <span *ngIf="creationForm.get('speed').errors?.required">*</span>
+  </div>
+  <button [disabled]="creationForm.invalid || creationForm.pristine" class="btn btn-primary">
+    Créer
+  </button>
+  <div>*Requis</div>
+</form>

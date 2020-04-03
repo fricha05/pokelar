@@ -1,3 +1,6 @@
+<h4>Choose {{!draftTurn ? 'Your Pokemon' : 'Your Enemy'}}</h4>
+<br>
 <div *ngFor="let pokemon of pokemonsAvailable" class="pokemon-thumbnail" (click)="onPokemonSelection(pokemon)">
+  <img [src]="pokemon.frontImgSrc"/>
   <div>{{ pokemon.name }}</div>
 </div>

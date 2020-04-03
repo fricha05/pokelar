@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Pokemon } from 'src/app/models/pokemon.model';
 import { Type } from 'src/app/models/type.model';
+import { Router } from '@angular/router';
+import { forkJoin, Observable } from 'rxjs';
+import { PokeApiService } from 'src/app/services/poke-api.service';
 
 enum DraftTurn {
   YOUR_SELECTION,
@@ -19,7 +22,7 @@ export class PokemonDraftComponent implements OnInit {
   enemySelection: Pokemon;
   draftTurn: DraftTurn;
   
-  constructor() { }
+  constructor(public router: Router, private pokeApiService: PokeApiService) { }
 
   ngOnInit(): void {
     this.pokemonsAvailable = [];
@@ -27,40 +30,20 @@ export class PokemonDraftComponent implements OnInit {
     this.enemySelection = null;
     this.draftTurn = DraftTurn.YOUR_SELECTION;
 
-    this.pokemonsAvailable.push(new Pokemon("Roucool", Type.Flying, 15, 76, 70, 43, 67, 23, 54, 
-      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/16.png", 
-      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/16.png", 
-      []));
-      this.pokemonsAvailable.push(new Pokemon("Roucool", Type.Flying, 15, 76, 70, 43, 67, 23, 54, 
-      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/16.png", 
-      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/16.png", 
-      []));
-      this.pokemonsAvailable.push(new Pokemon("Roucool", Type.Flying, 15, 76, 70, 43, 67, 23, 54, 
-      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/16.png", 
-      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/16.png", 
-      []));
-      this.pokemonsAvailable.push(new Pokemon("Roucool", Type.Flying, 15, 76, 70, 43, 67, 23, 54, 
-      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/16.png", 
-      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/16.png", 
-      []));
-      this.pokemonsAvailable.push(new Pokemon("Roucool", Type.Flying, 15, 76, 70, 43, 67, 23, 54, 
-      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/16.png", 
-      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/16.png", 
-      []));
-
+    this.pokeApiService.getAllAvailablePokemon()
+      .subscribe(
+        res => this.pokemonsAvailable = res,
+        err => console.log('ERROR', err),
+      )
   }
 
   onPokemonSelection(pkm: Pokemon) {
-    console.log('Pokemon clicked', pkm);
-
-    if(this.draftTurn === DraftTurn.YOUR_SELECTION) {
+    if (this.draftTurn === DraftTurn.YOUR_SELECTION) {
       this.yourSelection = pkm;
       this.draftTurn = DraftTurn.ENEMY_SELECTION;
     } else {
       this.enemySelection = pkm;
-      // TODO: Route to battle
-      console.log('GO TO BATTLE');
-      alert('GO TO BATTLE');
+      this.router.navigate(['battle', this.yourSelection.name, this.enemySelection.name]);
     }
   }
 }

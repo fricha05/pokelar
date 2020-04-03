@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PokeApiService } from 'src/app/services/poke-api.service';
 import { Pokemon } from 'src/app/models/pokemon.model';
 import { BattleService } from 'src/app/services/battle.service';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-pokemon-battle',
@@ -9,15 +10,27 @@ import { BattleService } from 'src/app/services/battle.service';
   styleUrls: ['./pokemon-battle.component.css']
 })
 export class PokemonBattleComponent implements OnInit {
+  static MY_DEFAULT_POKEMON: string = "roucool";
+  static ENEMY_DEFAULT_POKEMON: string = "nidoran";
 
   constructor(private pokeApiService: PokeApiService,
-    private battleService: BattleService) { }
+    public battleService: BattleService,
+    private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    // TODO: get names from params
+    this.route.params.subscribe((params: Params) => {
+      if (params.myPokemon) {
+        this.getPokemonByName(params.myPokemon, true);
+      } else if (!this.battleService.myPokemon) {
+        this.getPokemonByName(PokemonBattleComponent.MY_DEFAULT_POKEMON, true);
+      }
 
-    this.getPokemonByName("rattata", true);
-    this.getPokemonByName("quenotor", false);
+      if (params.enemyPokemon) {
+        this.getPokemonByName(params.enemyPokemon, false);
+      } else if (!this.battleService.enemyPokemon) {
+        this.getPokemonByName(PokemonBattleComponent.ENEMY_DEFAULT_POKEMON, false);
+      }
+    });
   }
 
   getPokemonByName(name: string, mine: boolean): void {
